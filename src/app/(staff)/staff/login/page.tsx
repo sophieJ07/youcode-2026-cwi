@@ -32,8 +32,8 @@ export default async function StaffLoginPage({ searchParams }: Props) {
           Staff dashboard
         </h1>
         <p className="mt-2 text-center text-slate-600">
-          Sign in with the method enabled in your Supabase project (email,
-          magic link, SSO, etc.).
+          Sign in with email and password, or create an account. Enable Email
+          provider under Supabase → Authentication → Providers.
         </p>
         {params.error === "auth" && (
           <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-center text-sm text-red-800">

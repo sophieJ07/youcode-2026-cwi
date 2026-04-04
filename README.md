@@ -11,6 +11,7 @@ npm run dev
 ```
 
 - Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local` (Supabase → Project Settings → API).
+- Supabase → Authentication → Providers: turn on **Email**, allow sign-ups if staff should create accounts, and adjust **Confirm email** (off is easiest for local dev).
 - Supabase → Authentication → URL configuration: add redirect URL `http://localhost:3000/auth/callback` (and production when deployed).
 - Supabase → SQL editor: run `supabase/migrations/00001_mood_entries.sql` on a fresh DB for these tables.
 - Seed at least one shelter, e.g.:
