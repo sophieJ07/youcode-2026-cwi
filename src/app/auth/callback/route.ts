@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const next = safeInternalPath(
     searchParams.get("next"),
-    "/staff/dashboard",
+    "/staff/access-code",
   );
 
   if (code) {
