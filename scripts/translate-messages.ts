@@ -4,7 +4,8 @@ import path from 'path';
 
 const client = new Anthropic();
 // const TARGET_LOCALES = ['fr', 'ar', 'es'];
-const TARGET_LOCALES = ['ja'];
+// const TARGET_LOCALES = ['zh', 'pa', 'ja'];
+const TARGET_LOCALES = ['tl', 'yue', 'hi', 'vi', 'fa', 'ko', 'so'];
 
 async function translateMessages(sourceMessages: object, targetLocale: string) {
   const response = await client.messages.create({
@@ -31,12 +32,17 @@ async function main() {
 
   for (const locale of TARGET_LOCALES) {
     console.log(`Translating → ${locale}...`);
-    const translated = await translateMessages(source, locale);
-    await fs.writeFile(
-      path.join(process.cwd(), `messages/${locale}.json`),
-      JSON.stringify(translated, null, 2) + '\n'
-    );
-    console.log(`  ✓ messages/${locale}.json`);
+    try {
+        const translated = await translateMessages(source, locale);
+        await fs.writeFile(
+          path.join(process.cwd(), `messages/${locale}.json`),
+          JSON.stringify(translated, null, 2) + '\n'
+        );
+        console.log(`  ✓ messages/${locale}.json`);
+    } catch {
+        console.log(`  couldn't create messages/${locale}.json`);
+        continue;
+    }
   }
 }
 
