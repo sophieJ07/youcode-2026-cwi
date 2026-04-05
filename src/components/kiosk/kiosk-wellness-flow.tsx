@@ -644,8 +644,10 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
       </main>
 
       <footer className="shrink-0 border-t border-[var(--kiosk-ink)]/10 bg-[var(--kiosk-bg)]/95 px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-5">
-        <nav className="flex flex-wrap items-center justify-center">
-          <LanguageSwitcher current={locale} />
+        <nav className="overflow-x-auto">
+          <div className="flex items-center justify-start gap-2 min-w-max px-1">
+            <LanguageSwitcher current={locale} />
+          </div>
         </nav>
       </footer>
     </div>
