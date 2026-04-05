@@ -4,6 +4,10 @@ import { safeInternalPath } from "@/lib/safe-redirect";
 
 const STAFF_LOGIN = "/staff/login";
 
+function isStaffPublicUiPath(pathname: string): boolean {
+  return pathname === STAFF_LOGIN;
+}
+
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -33,21 +37,24 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/staff") && !pathname.startsWith(STAFF_LOGIN)) {
+  if (pathname === STAFF_LOGIN && user) {
+    const dest = safeInternalPath(
+      request.nextUrl.searchParams.get("next"),
+      "/staff/access-code",
+    );
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = dest;
+    redirectUrl.search = "";
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (pathname.startsWith("/staff") && !isStaffPublicUiPath(pathname)) {
     if (!user) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = STAFF_LOGIN;
       redirectUrl.searchParams.set("next", pathname);
       return NextResponse.redirect(redirectUrl);
     }
-  }
-
-  if (pathname === STAFF_LOGIN && user) {
-    const next = safeInternalPath(
-      request.nextUrl.searchParams.get("next"),
-      "/staff/dashboard",
-    );
-    return NextResponse.redirect(new URL(next, request.url));
   }
 
   return supabaseResponse;

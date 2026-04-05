@@ -1,127 +1,86 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { SignOutButton } from "@/components/staff/sign-out-button";
-import { StaffShelterClaim } from "@/components/staff/staff-shelter-claim";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { SignOutButton } from "@/components/staff/sign-out-button";
+import { StaffShellHeader } from "@/components/staff/staff-shell-header";
+import { InsightsWellnessSlot } from "@/components/staff/insights-wellness-slot";
+import { InsightsActionsSlot } from "@/components/staff/insights-actions-slot";
 
 export const metadata: Metadata = {
   title: "Insights | Staff",
 };
 
-type MoodRow = {
-  id: string;
-  created_at: string;
-  mood_level: number;
-  shelter_id: string;
-  shelters: { name: string | null } | null;
-};
+function shelterLocationPhrase(names: string[]): string {
+  if (names.length === 0) return "your shelter";
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
+}
 
 export default async function StaffDashboardPage() {
   const supabase = await createServerSupabaseClient();
 
-  const { count: accessCount, error: accessError } = await supabase
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    redirect("/staff/login?next=/staff/dashboard");
+  }
+
+  const { count, error } = await supabase
     .from("user_shelter_access")
     .select("*", { count: "exact", head: true });
 
-  const { data, error } = await supabase
-    .from("mood_entries")
-    .select("id, created_at, mood_level, shelter_id, shelters(name)")
-    .order("created_at", { ascending: false })
-    .limit(100);
+  if (!error && (count == null || count < 1)) {
+    redirect("/staff/access-code");
+  }
 
-  const rows = data as MoodRow[] | null;
-  const loadError = error?.message ?? null;
-  const accessHasError = Boolean(
-    accessError?.message &&
-      (accessError.message.includes("relation") ||
-        accessError.message.includes("does not exist")),
+  const { data: shelters } = await supabase
+    .from("shelters")
+    .select("name")
+    .order("name");
+
+  const shelterNames = (shelters ?? [])
+    .map((s) => s.name?.trim())
+    .filter((n): n is string => Boolean(n && n.length > 0));
+
+  const at = shelterLocationPhrase(shelterNames);
+
+  const loadingDiv = (
+    <div className="min-h-[200px] animate-pulse rounded-xl bg-[var(--staff-input-bg)]/50" />
   );
-  const hasAccess =
-    !accessHasError && accessCount != null && accessCount > 0;
 
   return (
-    <div className="min-h-full">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-              Staff
-            </p>
-            <h1 className="text-xl font-semibold text-slate-900">
-              Guest check-ins
-            </h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="text-sm font-medium text-amber-900 underline decoration-amber-400 underline-offset-2 hover:text-amber-950"
-            >
-              Open kiosk view
-            </Link>
-            <SignOutButton />
-          </div>
-        </div>
-      </header>
+    <div className="flex min-h-dvh flex-col bg-[var(--staff-bg)] text-[var(--staff-ink)]">
+      <StaffShellHeader showProfileSlot profileSlot={<SignOutButton />} />
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-8">
+        <h1 className="text-center text-2xl font-bold leading-snug text-[var(--staff-ink)] sm:text-left sm:text-3xl">
+          Live wellness data at {at}
+        </h1>
 
-      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-        <div className="mb-8">
-          <StaffShelterClaim />
-        </div>
-
-        <section className="rounded-2xl border border-dashed border-slate-200 bg-amber-50/50 p-6 text-slate-700">
-          <h2 className="font-semibold text-slate-900">Suggestions</h2>
-          <p className="mt-2 text-sm leading-relaxed">
-            This area is ready for charts, trends, and AI-assisted suggestions
-            built on <code className="text-slate-800">mood_entries</code>{" "}
-            (with{" "}
-            <code className="text-slate-800">mood_level</code> 1–5 per
-            shelter).
-          </p>
+        {/* Wellness Summary */}
+        <section className="mt-8 rounded-2xl border border-[var(--staff-ink)]/10 bg-[var(--staff-card)] p-6 shadow-md sm:p-8">
+          <h2 className="text-lg font-bold text-[var(--staff-ink)]">
+            Wellness Summary
+          </h2>
+          <div className="mt-6">
+            <Suspense fallback={loadingDiv}>
+              <InsightsWellnessSlot />
+            </Suspense>
+          </div>
         </section>
 
-        <section className="mt-8">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Recent check-ins
+        {/* Suggested Actions */}
+        <section className="mt-6 rounded-2xl border border-[var(--staff-ink)]/10 bg-[var(--staff-card)] p-6 shadow-md sm:mt-8 sm:p-8">
+          <h2 className="text-lg font-bold text-[var(--staff-ink)]">
+            Suggested Actions
           </h2>
-          {loadError && (
-            <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">
-              {loadError.includes("relation") || loadError.includes("does not exist")
-                ? "Database tables are missing or outdated. Run supabase/migrations/00001_mood_entries.sql in the SQL editor."
-                : loadError}
-            </p>
-          )}
-          {!loadError && (!rows || rows.length === 0) && (
-            <p className="mt-4 text-slate-600">
-              {hasAccess
-                ? "No entries yet for the shelters linked to your account."
-                : "Unlock a shelter with an access code to see check-ins from the kiosk."}
-            </p>
-          )}
-          {!loadError && rows && rows.length > 0 && (
-            <ul className="mt-4 divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200 bg-white">
-              {rows.map((row) => (
-                <li
-                  key={row.id}
-                  className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-start sm:justify-between"
-                >
-                  <div>
-                    <p className="font-medium text-slate-900">
-                      Mood {row.mood_level}/5
-                      {row.shelters?.name != null && row.shelters.name !== ""
-                        ? ` · ${row.shelters.name}`
-                        : ""}
-                    </p>
-                  </div>
-                  <time
-                    dateTime={row.created_at}
-                    className="shrink-0 text-sm text-slate-500"
-                  >
-                    {new Date(row.created_at).toLocaleString()}
-                  </time>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="mt-6">
+            <Suspense fallback={loadingDiv}>
+              <InsightsActionsSlot />
+            </Suspense>
+          </div>
         </section>
       </main>
     </div>

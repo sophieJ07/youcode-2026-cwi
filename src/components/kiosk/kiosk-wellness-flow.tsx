@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { WellnessBrandLogo } from "@/components/wellness-brand-logo";
 import {
   getMoodOptions,
   getShortQuestions,
@@ -11,12 +11,30 @@ import {
 } from "./wellness-questions";
 import { LanguageSwitcher } from "./language-switcher";
 
-/** Spaces in filenames are URL-encoded for the browser. */
-const LOGO_PATH = "/assets/images/cwi%20logo%20WOMEN.avif";
-
 /** Thanks screen visible time before fade-out (ms). */
 const THANKS_VISIBLE_MS = 2400;
 const THANKS_FADE_MS = 500;
+
+const SHORT_SURVEY_ICON_SRC = "/assets/survey/short-survey.png";
+const LONG_SURVEY_ICON_SRC = "/assets/survey/long-survey.png";
+
+function FollowupOptionIcon({ src }: { src: string }) {
+  return (
+    <span
+      className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-[var(--kiosk-ink)]/10 sm:h-20 sm:w-20"
+      aria-hidden
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element -- local raster assets */}
+      <img
+        src={src}
+        alt=""
+        width={160}
+        height={160}
+        className="h-full w-full object-contain"
+      />
+    </span>
+  );
+}
 
 type Phase =
   | "access"
@@ -54,16 +72,12 @@ function MultiselectQuestion({
           return (
             <li key={opt}>
               <label
-                className={`flex cursor-pointer items-center gap-4 rounded-[1.25rem] border-2 bg-white px-4 py-4 shadow-sm transition-colors ${
+                className={`flex cursor-pointer items-center rounded-[1.25rem] border-2 bg-white px-4 py-4 shadow-sm transition-colors ${
                   isOn
                     ? "border-[var(--kiosk-button)] bg-white ring-2 ring-[var(--kiosk-button)]/25"
                     : "border-transparent hover:border-[var(--kiosk-ink)]/15"
                 }`}
               >
-                <span
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-neutral-300/80"
-                  aria-hidden
-                />
                 <span className="text-base font-medium text-[var(--kiosk-ink)]">
                   {opt}
                 </span>
@@ -136,7 +150,6 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
   const SHORT_FOLLOWUP_QUESTIONS = getShortQuestions(t);
   const LONG_FOLLOWUP_QUESTIONS = getLongQuestions(t);
 
-  const [logoFailed, setLogoFailed] = useState(false);
   const [phase, setPhase] = useState<Phase>("access");
   const [accessInput, setAccessInput] = useState("");
 
@@ -170,10 +183,10 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
 
   useEffect(() => {
     if (phase !== "thanks") {
-      setThanksFadeOut(false);
+      queueMicrotask(() => setThanksFadeOut(false));
       return;
     }
-    setThanksFadeOut(false);
+    queueMicrotask(() => setThanksFadeOut(false));
     const timer = window.setTimeout(() => setThanksFadeOut(true), THANKS_VISIBLE_MS);
     return () => window.clearTimeout(timer);
   }, [phase]);
@@ -182,10 +195,10 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
     if (phase !== "mood") return;
     if (skipMoodFadeInRef.current) {
       skipMoodFadeInRef.current = false;
-      setMoodEnter(true);
+      queueMicrotask(() => setMoodEnter(true));
       return;
     }
-    setMoodEnter(false);
+    queueMicrotask(() => setMoodEnter(false));
     const id = requestAnimationFrame(() => {
       requestAnimationFrame(() => setMoodEnter(true));
     });
@@ -230,27 +243,13 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
   const header = useMemo(
     () => (
       <header className="flex shrink-0 items-center gap-3 px-5 pb-3 pt-5">
-        <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-xs font-bold ring-2 ring-[var(--kiosk-ink)]/10">
-          {!logoFailed ? (
-            <Image
-              src={LOGO_PATH}
-              alt="CWI"
-              width={44}
-              height={44}
-              className="object-cover"
-              unoptimized
-              onError={() => setLogoFailed(true)}
-            />
-          ) : (
-            <span aria-hidden>CWI</span>
-          )}
-        </div>
+        <WellnessBrandLogo />
         <span className="text-lg font-bold tracking-tight text-[var(--kiosk-ink)]">
           {t("WellnessFlow.headerTitle")}
         </span>
       </header>
     ),
-    [logoFailed, t],
+    [t],
   );
 
   return (
@@ -314,16 +313,22 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
                     onClick={() =>
                       setMoodSelected((prev) => toggleInList(prev, m.id))
                     }
-                    className={`flex min-h-[7rem] flex-col items-center justify-center gap-2 rounded-[1.25rem] border-2 bg-white px-3 py-4 shadow-sm transition-colors ${
+                    className={`flex min-h-[7.5rem] flex-col items-center justify-center gap-2 rounded-[1.25rem] border-2 bg-white px-3 py-4 shadow-sm transition-colors ${
                       on
                         ? "border-[var(--kiosk-button)] ring-2 ring-[var(--kiosk-button)]/25"
                         : "border-transparent hover:border-[var(--kiosk-ink)]/10"
                     }`}
                   >
-                    <span
-                      className="h-12 w-12 rounded-full bg-neutral-300/80"
-                      aria-hidden
-                    />
+                    <span className="relative flex h-[4.25rem] w-[4.25rem] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+                      {/* eslint-disable-next-line @next/next/no-img-element -- local raster mood assets */}
+                      <img
+                        src={m.imageSrc}
+                        alt=""
+                        width={136}
+                        height={136}
+                        className="h-full w-full object-contain"
+                      />
+                    </span>
                     <span className="font-semibold">{m.label}</span>
                   </button>
                 );
@@ -365,11 +370,7 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
                 }}
                 className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
               >
-                <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                  <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                    icon
-                  </span>
-                </div>
+                <FollowupOptionIcon src={SHORT_SURVEY_ICON_SRC} />
                 <div className="min-w-0 flex-1">
                   <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                     {t("WellnessFlow.shortQuestionsLabel")}
@@ -384,11 +385,7 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
                 onClick={() => setPhase("long")}
                 className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
               >
-                <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                  <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                    icon
-                  </span>
-                </div>
+                <FollowupOptionIcon src={LONG_SURVEY_ICON_SRC} />
                 <div className="min-w-0 flex-1">
                   <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                     {t("WellnessFlow.longQuestionsLabel")}
@@ -427,11 +424,7 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
                   onClick={() => setPhase("long")}
                   className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
                 >
-                  <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                    <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                      icon
-                    </span>
-                  </div>
+                  <FollowupOptionIcon src={LONG_SURVEY_ICON_SRC} />
                   <div className="min-w-0 flex-1">
                     <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                       {t("WellnessFlow.longQuestionsLabel")}
@@ -451,11 +444,7 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
                   }}
                   className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
                 >
-                  <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                    <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                      icon
-                    </span>
-                  </div>
+                  <FollowupOptionIcon src={SHORT_SURVEY_ICON_SRC} />
                   <div className="min-w-0 flex-1">
                     <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                       {t("WellnessFlow.shortQuestionsLabel")}
@@ -557,8 +546,8 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
 
       </main>
 
-      <footer className="shrink-0 border-t border-[var(--kiosk-ink)]/10 bg-[var(--kiosk-bg)]/95 px-2 py-3 backdrop-blur-sm">
-        <nav className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+      <footer className="shrink-0 border-t border-[var(--kiosk-ink)]/10 bg-[var(--kiosk-bg)]/95 px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-5">
+        <nav className="flex flex-wrap items-center justify-center">
           <LanguageSwitcher current={locale} />
         </nav>
       </footer>
