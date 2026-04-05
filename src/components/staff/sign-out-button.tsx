@@ -15,7 +15,7 @@ export function SignOutButton() {
         router.push("/staff/login");
         router.refresh();
       }}
-      className="rounded-lg border border-[var(--staff-ink)]/20 bg-[var(--staff-card)] px-3 py-1.5 text-sm font-medium text-[var(--staff-ink)] shadow-sm transition hover:bg-[var(--staff-input-bg)] active:opacity-90"
+      className="rounded-lg border border-[var(--staff-ink)]/20 bg-[var(--staff-card)] px-4 py-2 text-base font-medium text-[var(--staff-ink)] shadow-sm transition hover:bg-[var(--staff-input-bg)] active:opacity-90"
     >
       Sign out
     </button>

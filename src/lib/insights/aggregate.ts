@@ -1,8 +1,4 @@
-import {
-  MOOD_OPTIONS,
-  QUESTION_OPTIONS,
-  type QuestionKey,
-} from "./questions";
+import { MOOD_OPTIONS, QUESTION_OPTIONS } from "./questions";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

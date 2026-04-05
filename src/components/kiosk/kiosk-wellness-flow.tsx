@@ -49,16 +49,21 @@ function toggleInList(list: string[], id: string): string[] {
   return list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 }
 
+/** Long Q3 & Q6 are multiselect in copy (“select all that apply”); others are single-select on the kiosk only. */
+const LONG_QUESTION_MULTI_IDS = new Set(["long-3", "long-6"]);
+
 function MultiselectQuestion({
   question,
   selected,
   onToggle,
   optionalLabel,
+  multiple,
 }: {
   question: WellnessQuestion;
   selected: string[];
   onToggle: (option: string) => void;
   optionalLabel: string;
+  multiple: boolean;
 }) {
   return (
     <fieldset className="flex flex-col gap-3">
@@ -71,8 +76,12 @@ function MultiselectQuestion({
           const isOn = selected.includes(opt);
           return (
             <li key={opt}>
-              <label
-                className={`flex cursor-pointer items-center rounded-[1.25rem] border-2 bg-white px-4 py-4 shadow-sm transition-colors ${
+              <button
+                type="button"
+                role={multiple ? "checkbox" : "radio"}
+                aria-checked={isOn}
+                onClick={() => onToggle(opt)}
+                className={`flex w-full cursor-pointer items-center rounded-[1.25rem] border-2 bg-white px-4 py-4 text-left shadow-sm transition-colors ${
                   isOn
                     ? "border-[var(--kiosk-button)] bg-white ring-2 ring-[var(--kiosk-button)]/25"
                     : "border-transparent hover:border-[var(--kiosk-ink)]/15"
@@ -81,13 +90,7 @@ function MultiselectQuestion({
                 <span className="text-base font-medium text-[var(--kiosk-ink)]">
                   {opt}
                 </span>
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={isOn}
-                  onChange={() => onToggle(opt)}
-                />
-              </label>
+              </button>
             </li>
           );
         })}
@@ -173,6 +176,18 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
       ...prev,
       [qid]: toggleInList(prev[qid] ?? [], option),
     }));
+  }, []);
+
+  const toggleLongAnswer = useCallback((qid: string, option: string) => {
+    const multiple = LONG_QUESTION_MULTI_IDS.has(qid);
+    setAnswers((prev) => {
+      const cur = prev[qid] ?? [];
+      if (multiple) {
+        return { ...prev, [qid]: toggleInList(cur, option) };
+      }
+      const on = cur.includes(option) && cur.length === 1;
+      return { ...prev, [qid]: on ? [] : [option] };
+    });
   }, []);
 
   const currentShortQ = SHORT_FOLLOWUP_QUESTIONS[shortIndex];
@@ -509,15 +524,19 @@ export function KioskWellnessFlow({ locale }: { locale: string }) {
               {t("WellnessFlow.longFormSubtitle")}
             </p>
             <div className="mt-8 flex flex-col gap-12 rounded-[1.25rem] border border-[var(--kiosk-ink)]/10 bg-white/40 p-6 shadow-inner">
-              {LONG_FOLLOWUP_QUESTIONS.map((q) => (
-                <MultiselectQuestion
-                  key={q.id}
-                  question={q}
-                  selected={answers[q.id] ?? []}
-                  onToggle={(opt) => toggleAnswer(q.id, opt)}
-                  optionalLabel={t("WellnessFlow.optionalSelectAny")}
-                />
-              ))}
+              {LONG_FOLLOWUP_QUESTIONS.map((q) => {
+                const multiple = LONG_QUESTION_MULTI_IDS.has(q.id);
+                return (
+                  <MultiselectQuestion
+                    key={q.id}
+                    question={q}
+                    selected={answers[q.id] ?? []}
+                    onToggle={(opt) => toggleLongAnswer(q.id, opt)}
+                    optionalLabel={t("WellnessFlow.optionalSelectAny")}
+                    multiple={multiple}
+                  />
+                );
+              })}
             </div>
             <button
               type="button"

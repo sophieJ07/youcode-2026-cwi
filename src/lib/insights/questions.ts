@@ -1,37 +1,34 @@
 // ─── Opening ─────────────────────────────────────────────────────────────────
-// mood_level stored as 1–6
+// mood_level ints 1–6: same order as `MOOD_OPTIONS` in `wellness-questions.ts` (kiosk tiles).
 
 export const MOOD_OPTIONS: Record<number, string> = {
-  1: "Content",
-  2: "Anxious",
-  3: "Tired",
-  4: "Okay",
-  5: "Great",
-  6: "Upset",
+  1: "Tired",
+  2: "Okay",
+  3: "Great",
+  4: "Content",
+  5: "Upset",
+  6: "Anxious",
 };
 
 // ─── Short Survey ─────────────────────────────────────────────────────────────
 // All options stored as 1-based indices
 
 export const SQ1_OPTIONS: Record<number, string> = {
-  1: "Talking to others",
-  2: "Improved sleep or relaxation",
-  3: "Setting goals and priorities",
-  4: "A short walk or other physical activity",
-  5: "A meal or snack",
-  6: "None right now",
-  7: "Other",
+  1: "Talking to others like me",
+  2: "Advice and guidance",
+  3: "Improved sleep or relaxation",
+  4: "A meal or snacks",
+  5: "Setting goals and priorities",
+  6: "A short walk or other physical activity",
 };
 
 export const SQ2_OPTIONS: Record<number, string> = {
-  1: "Stretching",
+  1: "Stretching or yoga",
   2: "Light walking",
-  3: "Chair-based movement",
+  3: "Chair\u2011based movement",
   4: "Breathing exercises",
-  5: "Dancing or music-based movement",
-  6: "Playing with children",
-  7: "None right now",
-  8: "Other",
+  5: "Dancing or music\u2011based movement",
+  6: "Games or playing",
 };
 
 export const SQ3_OPTIONS: Record<number, string> = {
@@ -41,9 +38,6 @@ export const SQ3_OPTIONS: Record<number, string> = {
   4: "Time in nature",
   5: "Reading or writing",
   6: "Connecting with others",
-  7: "Caring for children",
-  8: "None right now",
-  9: "Other",
 };
 
 // ─── Long Survey ──────────────────────────────────────────────────────────────
@@ -86,8 +80,9 @@ export const LQ4_OPTIONS: Record<number, string> = {
 export const LQ5_OPTIONS: Record<number, string> = {
   1: "Very strong",
   2: "Somewhat strong",
-  3: "Somewhat weak",
-  4: "Very weak",
+  3: "Neutral",
+  4: "Somewhat weak",
+  5: "Very weak",
 };
 
 export const LQ6_OPTIONS: Record<number, string> = {
@@ -118,13 +113,19 @@ export type QuestionKey = keyof typeof QUESTION_OPTIONS;
 // ─── Question labels (for display) ───────────────────────────────────────────
 
 export const QUESTION_LABELS: Record<QuestionKey, string> = {
-  sq1_answer: "Mind - What would be most helpful right now?",
-  sq2_answer: "Body - What movement feels doable?",
-  sq3_answer: "Soul - What activities make you feel like you?",
-  lq1_answer: "Mind - Stress level over the last two weeks",
-  lq2_answer: "Mind - How often felt hopeful over the last two weeks",
-  lq3_answer: "Body - How has your body felt this week?",
-  lq4_answer: "Body - Access to nutritious food",
-  lq5_answer: "Soul - Sense of belonging in the community",
-  lq6_answer: "Soul - Programs of interest",
+  sq1_answer:
+    "Which of these would be most helpful to you right now?",
+  sq2_answer:
+    "What kind of movement feels good or doable for you right now?",
+  sq3_answer: "Which activities help you feel like you?",
+  lq1_answer:
+    "Thinking about your stress levels over the last two weeks, would you say that most days are…",
+  lq2_answer: "How often have you felt hopeful over the last two weeks?",
+  lq3_answer: "How has your body felt this week? (Select all that apply)",
+  lq4_answer:
+    "How would you rate your current access to nutritious food that suits your needs?",
+  lq5_answer:
+    "How would you rate your sense of belonging in your local community?",
+  lq6_answer:
+    "Which types of programs would you be interested in? (Select all that apply)",
 };

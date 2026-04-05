@@ -14,7 +14,7 @@ export function StaffShellHeader({
     <header className="flex shrink-0 items-center justify-between border-b border-[var(--staff-ink)]/10 bg-[var(--wellness-surface)]/85 px-6 py-4 backdrop-blur-sm">
       <div className="flex items-center gap-3">
         <WellnessBrandLogo />
-        <span className="text-lg font-bold tracking-tight text-[var(--staff-ink)]">
+        <span className="text-xl font-bold tracking-tight text-[var(--staff-ink)]">
           Wellness Check-In
         </span>
       </div>
