@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "Wellness Check-In",
+    "title": "Flourish: Wellness Check-In",
     "description": "Anonymous na wellness check-in para sa mga bisita."
   },
   "WellnessFlow": {
     "anonymousLine": "Ang iyong sagot ay anonymous at nakakatulong sa amin na makapagbigay ng mas magandang pag-aalaga.",
-    "headerTitle": "Wellness Check-In",
+    "headerTitle": "Flourish: Wellness Check-In",
     "enterAccessCode": "Ilagay ang Access Code:",
     "accessCodeSubtitle": "Ilagay ang access code ng shelter para ma-setup ang device.",
     "accessCodePlaceholder": "Halimbawa: WS139",

@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "ਤੰਦਰੁਸਤੀ ਜਾਂਚ",
+    "title": "Flourish: ਤੰਦਰੁਸਤੀ ਜਾਂਚ",
     "description": "ਮਹਿਮਾਨਾਂ ਲਈ ਗੁਮਨਾਮ ਤੰਦਰੁਸਤੀ ਜਾਂਚ।"
   },
   "WellnessFlow": {
     "anonymousLine": "ਤੁਹਾਡਾ ਜਵਾਬ ਗੁਮਨਾਮ ਹੈ ਅਤੇ ਸਾਨੂੰ ਬਿਹਤਰ ਦੇਖਭਾਲ ਪ੍ਰਦਾਨ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰਦਾ ਹੈ।",
-    "headerTitle": "ਤੰਦਰੁਸਤੀ ਜਾਂਚ",
+    "headerTitle": "Flourish: ਤੰਦਰੁਸਤੀ ਜਾਂਚ",
     "enterAccessCode": "ਪਹੁੰਚ ਕੋਡ ਦਰਜ ਕਰੋ:",
     "accessCodeSubtitle": "ਡਿਵਾਈਸ ਸੈੱਟਅੱਪ ਕਰਨ ਲਈ ਆਸਰੇ ਦਾ ਪਹੁੰਚ ਕੋਡ ਦਰਜ ਕਰੋ।",
     "accessCodePlaceholder": "ਉਦਾ: WS139",

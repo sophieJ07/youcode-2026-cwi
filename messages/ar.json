@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "تسجيل الحالة النفسية",
+    "title": "Flourish: تسجيل الحالة النفسية",
     "description": "تسجيل مجهول للحالة النفسية للضيفات."
   },
   "WellnessFlow": {
     "anonymousLine": "إجابتك مجهولة الهوية وتساعدنا في تقديم رعاية أفضل.",
-    "headerTitle": "تسجيل الحالة النفسية",
+    "headerTitle": "Flourish: تسجيل الحالة النفسية",
     "enterAccessCode": "أدخلي رمز الدخول:",
     "accessCodeSubtitle": "أدخلي رمز الدخول الخاص بالملجأ لإعداد الجهاز.",
     "accessCodePlaceholder": "مثال: WS139",

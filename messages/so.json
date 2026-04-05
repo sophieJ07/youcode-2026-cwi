@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "Hubinta Fayo-qabka",
+    "title": "Flourish: Hubinta Fayo-qabka",
     "description": "Hubinta fayo-qabka ee aan magaca la sheegin ee martida."
   },
   "WellnessFlow": {
     "anonymousLine": "Jawaabta aad bixiso waa sir, waxayna naga caawisaa inaan daryeel ka wanaagsan bixino.",
-    "headerTitle": "Hubinta Fayo-qabka",
+    "headerTitle": "Flourish: Hubinta Fayo-qabka",
     "enterAccessCode": "Geli Koodhka Gelitaanka:",
     "accessCodeSubtitle": "Geli koodhka gelitaanka hoyga si aad u diyaarisid qalabka.",
     "accessCodePlaceholder": "TUSAALE: WS139",

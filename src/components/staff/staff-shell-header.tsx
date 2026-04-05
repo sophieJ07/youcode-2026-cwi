@@ -15,7 +15,7 @@ export function StaffShellHeader({
       <div className="flex items-center gap-3">
         <WellnessBrandLogo />
         <span className="text-xl font-bold tracking-tight text-[var(--staff-ink)]">
-          Wellness Check-In
+          Flourish: Wellness Check-In
         </span>
       </div>
       {showProfileSlot ? (

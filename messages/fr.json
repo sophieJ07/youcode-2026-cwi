@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "Bilan de bien-être",
+    "title": "Flourish: Bilan de bien-être",
     "description": "Bilan de bien-être anonyme pour les résidentes."
   },
   "WellnessFlow": {
     "anonymousLine": "Votre réponse est anonyme et nous aide à mieux prendre soin de vous.",
-    "headerTitle": "Bilan de bien-être",
+    "headerTitle": "Flourish: Bilan de bien-être",
     "enterAccessCode": "Entrez le code d'accès :",
     "accessCodeSubtitle": "Entrez le code d'accès du refuge pour configurer l'appareil.",
     "accessCodePlaceholder": "EX : WS139",

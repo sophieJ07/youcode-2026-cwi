@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "健康登記",
+    "title": "Flourish: 健康登記",
     "description": "為住客提供嘅匿名健康登記。"
   },
   "WellnessFlow": {
     "anonymousLine": "你嘅回應係匿名嘅，幫助我哋提供更好嘅照顧。",
-    "headerTitle": "健康登記",
+    "headerTitle": "Flourish: 健康登記",
     "enterAccessCode": "輸入存取碼：",
     "accessCodeSubtitle": "輸入庇護站存取碼嚟設定裝置。",
     "accessCodePlaceholder": "例如：WS139",

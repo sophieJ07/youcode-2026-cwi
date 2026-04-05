@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "ウェルネス チェックイン",
+    "title": "Flourish: ウェルネス チェックイン",
     "description": "ゲストのための匿名ウェルネス チェックインです。"
   },
   "WellnessFlow": {
     "anonymousLine": "回答は匿名です。より良いサポートを提供するために活用させていただきます。",
-    "headerTitle": "ウェルネス チェックイン",
+    "headerTitle": "Flourish: ウェルネス チェックイン",
     "enterAccessCode": "アクセスコードを入力してください：",
     "accessCodeSubtitle": "デバイスを設定するために、シェルターのアクセスコードを入力してください。",
     "accessCodePlaceholder": "例：WS139",

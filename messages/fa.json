@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "بررسی حال و احوال",
+    "title": "Flourish: بررسی حال و احوال",
     "description": "بررسی ناشناس حال و احوال برای مهمانان."
   },
   "WellnessFlow": {
     "anonymousLine": "پاسخ شما ناشناس است و به ما کمک می‌کند مراقبت بهتری ارائه دهیم.",
-    "headerTitle": "بررسی حال و احوال",
+    "headerTitle": "Flourish: بررسی حال و احوال",
     "enterAccessCode": "کد دسترسی را وارد کنید:",
     "accessCodeSubtitle": "کد دسترسی پناهگاه را برای راه‌اندازی دستگاه وارد کنید.",
     "accessCodePlaceholder": "مثال: WS139",

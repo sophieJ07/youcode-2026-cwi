@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "Kiểm Tra Sức Khỏe",
+    "title": "Flourish: Kiểm Tra Sức Khỏe",
     "description": "Kiểm tra sức khỏe ẩn danh dành cho khách."
   },
   "WellnessFlow": {
     "anonymousLine": "Câu trả lời của bạn là ẩn danh và giúp chúng tôi chăm sóc bạn tốt hơn.",
-    "headerTitle": "Kiểm Tra Sức Khỏe",
+    "headerTitle": "Flourish: Kiểm Tra Sức Khỏe",
     "enterAccessCode": "Nhập Mã Truy Cập:",
     "accessCodeSubtitle": "Nhập mã truy cập của nhà tạm trú để cài đặt thiết bị.",
     "accessCodePlaceholder": "VD: WS139",

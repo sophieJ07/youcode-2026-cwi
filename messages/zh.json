@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "健康签到",
+    "title": "Flourish: 健康签到",
     "description": "供来宾使用的匿名健康签到。"
   },
   "WellnessFlow": {
     "anonymousLine": "您的回答是匿名的，有助于我们为您提供更好的关怀。",
-    "headerTitle": "健康签到",
+    "headerTitle": "Flourish: 健康签到",
     "enterAccessCode": "请输入访问码：",
     "accessCodeSubtitle": "请输入庇护所的访问码来设置设备。",
     "accessCodePlaceholder": "例如：WS139",

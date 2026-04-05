@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "Registro de Bienestar",
+    "title": "Flourish: Registro de Bienestar",
     "description": "Registro de bienestar anónimo para las residentes."
   },
   "WellnessFlow": {
     "anonymousLine": "Tu respuesta es anónima y nos ayuda a brindarte una mejor atención.",
-    "headerTitle": "Registro de Bienestar",
+    "headerTitle": "Flourish: Registro de Bienestar",
     "enterAccessCode": "Ingresa el código de acceso:",
     "accessCodeSubtitle": "Ingresa el código de acceso del refugio para configurar el dispositivo.",
     "accessCodePlaceholder": "EJ: WS139",

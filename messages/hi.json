@@ -1,11 +1,11 @@
 {
   "KioskPage": {
-    "title": "स्वास्थ्य जाँच",
+    "title": "Flourish: स्वास्थ्य जाँच",
     "description": "मेहमानों के लिए गुमनाम स्वास्थ्य जाँच।"
   },
   "WellnessFlow": {
     "anonymousLine": "आपका जवाब गुमनाम है और इससे हमें बेहतर देखभाल करने में मदद मिलती है।",
-    "headerTitle": "स्वास्थ्य जाँच",
+    "headerTitle": "Flourish: स्वास्थ्य जाँच",
     "enterAccessCode": "एक्सेस कोड डालें:",
     "accessCodeSubtitle": "डिवाइस सेटअप करने के लिए शेल्टर का एक्सेस कोड डालें।",
     "accessCodePlaceholder": "उदाहरण: WS139",
