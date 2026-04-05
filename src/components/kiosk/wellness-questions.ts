@@ -11,19 +11,19 @@ type TFunction = ReturnType<typeof useTranslations>;
 export function getMoodOptions(t: TFunction) {
   return [
     { id: "great", label: t("MoodOptions.great") },
-    { id: "good", label: t("MoodOptions.good") },
+    { id: "content", label: t("MoodOptions.content") },
     { id: "okay", label: t("MoodOptions.okay") },
-    { id: "low", label: t("MoodOptions.low") },
-    { id: "stressed", label: t("MoodOptions.stressed") },
     { id: "tired", label: t("MoodOptions.tired") },
+    { id: "anxious", label: t("MoodOptions.anxious") },
+    { id: "upset", label: t("MoodOptions.upset") },
   ];
 }
 
 const SHORT_IDS = ["short-1", "short-2", "short-3"];
 const SHORT_OPT_COUNTS: Record<string, number> = {
   "short-1": 6,
-  "short-2": 5,
-  "short-3": 5,
+  "short-2": 6,
+  "short-3": 6,
 };
 
 export function getShortQuestions(t: TFunction): WellnessQuestion[] {
@@ -39,10 +39,10 @@ export function getShortQuestions(t: TFunction): WellnessQuestion[] {
 const LONG_IDS = ["long-1", "long-2", "long-3", "long-4", "long-5", "long-6"];
 const LONG_OPT_COUNTS: Record<string, number> = {
   "long-1": 5,
-  "long-2": 6,
+  "long-2": 5,
   "long-3": 5,
-  "long-4": 6,
-  "long-5": 6,
+  "long-4": 5,
+  "long-5": 5,
   "long-6": 5,
 };
 

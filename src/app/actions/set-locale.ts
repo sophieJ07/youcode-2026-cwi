@@ -2,11 +2,10 @@
 
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
-
-const SUPPORTED = ['en', 'fr', 'ar', 'es'];
+import { SUPPORTED_LOCALES } from '@/lib/locales';
 
 export async function setLocaleCookie(locale: string) {
-  if (!SUPPORTED.includes(locale)) return;
+  if (!(SUPPORTED_LOCALES as string[]).includes(locale)) return;
   const store = await cookies();
   store.set('locale', locale, { path: '/', maxAge: 60 * 60 * 24 * 365 });
   revalidatePath('/', 'layout');

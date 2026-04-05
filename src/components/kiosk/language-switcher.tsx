@@ -2,13 +2,7 @@
 
 import { useTransition } from 'react';
 import { setLocaleCookie } from '@/app/actions/set-locale';
-
-export const LANGUAGES = [
-  { code: 'en', label: 'English' },
-  { code: 'fr', label: 'Français' },
-  { code: 'ar', label: 'العربية' },
-  { code: 'es', label: 'Español' },
-];
+import { LANGUAGES } from '@/lib/locales';
 
 export function LanguageSwitcher({ current }: { current: string }) {
   const [isPending, startTransition] = useTransition();
