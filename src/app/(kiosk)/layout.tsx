@@ -1,14 +1,18 @@
 import type { CSSProperties } from "react";
+import {NextIntlClientProvider} from 'next-intl';
+import { getMessages } from 'next-intl/server';
 
 /** iPad portrait–style viewport: width × max height typical of 11" class tablets. */
 const IPAD_FRAME_MAX_W = 820;
 const IPAD_FRAME_MAX_H = 1180;
 
-export default function KioskLayout({
+export default async function KioskLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const messages = await getMessages();
+
   return (
     <div className="flex min-h-dvh w-full items-center justify-center bg-[#3d3535] p-3 sm:p-5">
       <div
@@ -24,7 +28,7 @@ export default function KioskLayout({
           } as CSSProperties
         }
       >
-        {children}
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </div>
     </div>
   );

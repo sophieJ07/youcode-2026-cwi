@@ -7,6 +7,7 @@ Next.js + Supabase: public kiosk at `/`, staff area at `/staff/*`.
 ```bash
 cp .env.example .env.local
 npm install
+npm install next-intl
 npm run dev
 ```
 
@@ -15,6 +16,7 @@ npm run dev
 - Supabase → Authentication → URL configuration: add redirect URL `http://localhost:3000/auth/callback` (and production when deployed).
 - Supabase → SQL editor: run `00001_mood_entries.sql` on a fresh DB, then `00002_mood_entries_survey_columns.sql` to extend `mood_entries`, then `00003_claim_shelter_access_disambiguate.sql` (fixes ambiguous `shelter_id` in `claim_shelter_access` for existing DBs), then `00004_mood_six_levels.sql` (allows mood array values **6**, not just the column type).
 - Seed at least one shelter, e.g.:
+- next-intl is needed to translate english text into other languages
 
 ```sql
 insert into public.shelters (name, access_code)
