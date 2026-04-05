@@ -12,13 +12,14 @@ import {
   type StatRow,
 } from "./stats-helpers";
 
+/** Same order as kiosk mood tiles (`wellness-questions` levels 1–6). */
 export const MOOD_GRID_ORDER = [
-  "Content",
-  "Anxious",
   "Tired",
   "Okay",
   "Great",
+  "Content",
   "Upset",
+  "Anxious",
 ] as const;
 
 export type ShortInsightsSnapshot = {

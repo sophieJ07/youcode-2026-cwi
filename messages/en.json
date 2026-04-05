@@ -92,7 +92,7 @@
     "long-5-opt-2": "Neutral",
     "long-5-opt-3": "Somewhat weak",
     "long-5-opt-4": "Very weak",
-    "long-6-prompt": "Which types of programs would you be interested in? (Select all that apply)",
+    "long-6-prompt": " Which types of programs would you be interested in? (Select all that apply)",
     "long-6-opt-0": "Art or craft workshops",
     "long-6-opt-1": "Music or movement sessions",
     "long-6-opt-2": "Cultural celebration days",
