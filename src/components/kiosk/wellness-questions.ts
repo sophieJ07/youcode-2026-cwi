@@ -6,14 +6,64 @@ export type WellnessQuestion = {
   options: string[];
 };
 
-export const MOOD_OPTIONS: { id: string; label: string }[] = [
-  { id: "great", label: "Great" },
-  { id: "good", label: "Good" },
-  { id: "okay", label: "Okay" },
-  { id: "low", label: "Low" },
-  { id: "stressed", label: "Stressed" },
-  { id: "tired", label: "Tired" },
+/** First check-in moods — order defines stable level 1–6 for `mood_level` int[]. */
+export type MoodOption = {
+  id: string;
+  label: string;
+  /** Public URL under /public */
+  imageSrc: string;
+  /** Stored in DB (1-based index in this array). */
+  level: number;
+};
+
+export const MOOD_OPTIONS: MoodOption[] = [
+  {
+    id: "tired",
+    label: "Tired",
+    imageSrc: "/assets/mood/tired.png",
+    level: 1,
+  },
+  {
+    id: "okay",
+    label: "Okay",
+    imageSrc: "/assets/mood/okay.png",
+    level: 2,
+  },
+  {
+    id: "great",
+    label: "Great",
+    imageSrc: "/assets/mood/great.png",
+    level: 3,
+  },
+  {
+    id: "content",
+    label: "Content",
+    imageSrc: "/assets/mood/content.png",
+    level: 4,
+  },
+  {
+    id: "upset",
+    label: "Upset",
+    imageSrc: "/assets/mood/upset.png",
+    level: 5,
+  },
+  {
+    id: "anxious",
+    label: "Anxious",
+    imageSrc: "/assets/mood/anxious.png",
+    level: 6,
+  },
 ];
+
+const moodLevelById = new Map(MOOD_OPTIONS.map((m) => [m.id, m.level]));
+
+/** Map selected mood tile ids to DB mood_level ints (multiselect). */
+export function moodLevelsFromSelection(selectedIds: string[]): number[] {
+  const levels = selectedIds
+    .map((id) => moodLevelById.get(id))
+    .filter((n): n is number => n != null);
+  return [...new Set(levels)].sort((a, b) => a - b);
+}
 
 /** Three short questions — shown one at a time. */
 export const SHORT_FOLLOWUP_QUESTIONS: WellnessQuestion[] = [

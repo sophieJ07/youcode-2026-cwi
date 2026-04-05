@@ -16,6 +16,27 @@ const THANKS_FADE_MS = 500;
 const ANONYMOUS_LINE =
   "Your response is anonymous and helps us provide better care.";
 
+const SHORT_SURVEY_ICON_SRC = "/assets/survey/short-survey.png";
+const LONG_SURVEY_ICON_SRC = "/assets/survey/long-survey.png";
+
+function FollowupOptionIcon({ src }: { src: string }) {
+  return (
+    <span
+      className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-[var(--kiosk-ink)]/10 sm:h-20 sm:w-20"
+      aria-hidden
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element -- local raster assets */}
+      <img
+        src={src}
+        alt=""
+        width={160}
+        height={160}
+        className="h-full w-full object-contain"
+      />
+    </span>
+  );
+}
+
 type Phase =
   | "access"
   | "mood"
@@ -50,16 +71,12 @@ function MultiselectQuestion({
           return (
             <li key={opt}>
               <label
-                className={`flex cursor-pointer items-center gap-4 rounded-[1.25rem] border-2 bg-white px-4 py-4 shadow-sm transition-colors ${
+                className={`flex cursor-pointer items-center rounded-[1.25rem] border-2 bg-white px-4 py-4 shadow-sm transition-colors ${
                   isOn
                     ? "border-[var(--kiosk-button)] bg-white ring-2 ring-[var(--kiosk-button)]/25"
                     : "border-transparent hover:border-[var(--kiosk-ink)]/15"
                 }`}
               >
-                <span
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-neutral-300/80"
-                  aria-hidden
-                />
                 <span className="text-base font-medium text-[var(--kiosk-ink)]">
                   {opt}
                 </span>
@@ -311,16 +328,22 @@ export function KioskWellnessFlow() {
                     onClick={() =>
                       setMoodSelected((prev) => toggleInList(prev, m.id))
                     }
-                    className={`flex min-h-[7rem] flex-col items-center justify-center gap-2 rounded-[1.25rem] border-2 bg-white px-3 py-4 shadow-sm transition-colors ${
+                    className={`flex min-h-[7.5rem] flex-col items-center justify-center gap-2 rounded-[1.25rem] border-2 bg-white px-3 py-4 shadow-sm transition-colors ${
                       on
                         ? "border-[var(--kiosk-button)] ring-2 ring-[var(--kiosk-button)]/25"
                         : "border-transparent hover:border-[var(--kiosk-ink)]/10"
                     }`}
                   >
-                    <span
-                      className="h-12 w-12 rounded-full bg-neutral-300/80"
-                      aria-hidden
-                    />
+                    <span className="relative flex h-[4.25rem] w-[4.25rem] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+                      {/* eslint-disable-next-line @next/next/no-img-element -- local raster mood assets */}
+                      <img
+                        src={m.imageSrc}
+                        alt=""
+                        width={136}
+                        height={136}
+                        className="h-full w-full object-contain"
+                      />
+                    </span>
                     <span className="font-semibold">{m.label}</span>
                   </button>
                 );
@@ -360,11 +383,7 @@ export function KioskWellnessFlow() {
                 }}
                 className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
               >
-                <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                  <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                    icon
-                  </span>
-                </div>
+                <FollowupOptionIcon src={SHORT_SURVEY_ICON_SRC} />
                 <div className="min-w-0 flex-1">
                   <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                     Answer 3 quick questions…
@@ -379,11 +398,7 @@ export function KioskWellnessFlow() {
                 onClick={() => setPhase("long")}
                 className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
               >
-                <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                  <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                    icon
-                  </span>
-                </div>
+                <FollowupOptionIcon src={LONG_SURVEY_ICON_SRC} />
                 <div className="min-w-0 flex-1">
                   <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                     Answer 6 questions…
@@ -422,11 +437,7 @@ export function KioskWellnessFlow() {
                   onClick={() => setPhase("long")}
                   className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
                 >
-                  <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                    <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                      icon
-                    </span>
-                  </div>
+                  <FollowupOptionIcon src={LONG_SURVEY_ICON_SRC} />
                   <div className="min-w-0 flex-1">
                     <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                       Answer 6 questions…
@@ -447,11 +458,7 @@ export function KioskWellnessFlow() {
                   }}
                   className="flex min-h-[7.5rem] w-full items-center gap-5 rounded-[1.75rem] border-2 border-transparent bg-white px-6 py-5 text-left shadow-md transition hover:border-[var(--kiosk-button)]/25 sm:min-h-[8.5rem]"
                 >
-                  <div className="flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-neutral-300/90 sm:h-20 sm:w-20">
-                    <span className="text-xs font-medium text-[var(--kiosk-ink)]/65">
-                      icon
-                    </span>
-                  </div>
+                  <FollowupOptionIcon src={SHORT_SURVEY_ICON_SRC} />
                   <div className="min-w-0 flex-1">
                     <p className="text-lg font-bold leading-tight text-[var(--kiosk-ink)] sm:text-xl">
                       Answer 3 quick questions…
