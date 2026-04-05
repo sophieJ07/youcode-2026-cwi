@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SignOutButton } from "@/components/staff/sign-out-button";
 import { StaffShellHeader } from "@/components/staff/staff-shell-header";
 
 export function StaffAccessCodeView() {
@@ -15,7 +16,10 @@ export function StaffAccessCodeView() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-[var(--staff-bg)] text-[var(--staff-ink)]">
-      <StaffShellHeader showProfileSlot />
+      <StaffShellHeader
+        showProfileSlot
+        profileSlot={<SignOutButton />}
+      />
       <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
         <form
           onSubmit={onSubmit}
@@ -41,7 +45,7 @@ export function StaffAccessCodeView() {
             Enter
           </button>
           <p className="mt-6 text-center text-xs text-[var(--staff-ink)]/50">
-            UI only — not validated against Supabase yet.
+            Access code validation coming soon.
           </p>
         </form>
       </div>

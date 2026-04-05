@@ -1,15 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { safeInternalPath } from "@/lib/safe-redirect";
 
 const STAFF_LOGIN = "/staff/login";
 
-/** Staff laptop UI routes (no auth yet) — remove from this list when wiring Supabase. */
 function isStaffPublicUiPath(pathname: string): boolean {
-  return (
-    pathname === STAFF_LOGIN ||
-    pathname === "/staff/access-code" ||
-    pathname === "/staff/dashboard"
-  );
+  return pathname === STAFF_LOGIN;
 }
 
 export async function middleware(request: NextRequest) {
@@ -41,6 +37,17 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
+  if (pathname === STAFF_LOGIN && user) {
+    const dest = safeInternalPath(
+      request.nextUrl.searchParams.get("next"),
+      "/staff/access-code",
+    );
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = dest;
+    redirectUrl.search = "";
+    return NextResponse.redirect(redirectUrl);
+  }
+
   if (pathname.startsWith("/staff") && !isStaffPublicUiPath(pathname)) {
     if (!user) {
       const redirectUrl = request.nextUrl.clone();
@@ -49,11 +56,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(redirectUrl);
     }
   }
-
-  // While staff laptop UI is public, do not skip /staff/login when a Supabase
-  // session exists (otherwise login always looks like "the dashboard").
-  // When wiring auth, restore: if (pathname === STAFF_LOGIN && user) redirect
-  // to /staff/access-code or /staff/dashboard per your flow.
 
   return supabaseResponse;
 }
