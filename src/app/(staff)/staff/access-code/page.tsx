@@ -16,5 +16,16 @@ export default async function StaffAccessCodePage() {
     redirect("/staff/login?next=/staff/access-code");
   }
 
-  return <StaffAccessCodeView />;
+  const { count, error } = await supabase
+    .from("user_shelter_access")
+    .select("*", { count: "exact", head: true });
+
+  const hasExistingShelterAccess =
+    !error && count != null && count > 0;
+
+  return (
+    <StaffAccessCodeView
+      hasExistingShelterAccess={hasExistingShelterAccess}
+    />
+  );
 }

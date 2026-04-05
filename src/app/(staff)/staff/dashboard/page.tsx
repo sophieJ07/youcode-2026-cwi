@@ -16,5 +16,26 @@ export default async function StaffDashboardPage() {
     redirect("/staff/login?next=/staff/dashboard");
   }
 
-  return <StaffDashboardView />;
+  const { count, error } = await supabase
+    .from("user_shelter_access")
+    .select("*", { count: "exact", head: true });
+
+  if (!error && (count == null || count < 1)) {
+    redirect("/staff/access-code");
+  }
+
+  const { data: shelters } = await supabase
+    .from("shelters")
+    .select("name")
+    .order("name");
+
+  const shelterNames = (shelters ?? [])
+    .map((s) => s.name?.trim())
+    .filter((n): n is string => Boolean(n && n.length > 0));
+
+  return (
+    <StaffDashboardView
+      shelterNames={shelterNames}
+    />
+  );
 }
