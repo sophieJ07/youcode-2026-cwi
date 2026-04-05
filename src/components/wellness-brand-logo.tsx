@@ -9,7 +9,7 @@ type Props = {
 };
 
 /**
- * Same logo treatment as the kiosk: CWI image in a round white frame, or “CWI” fallback.
+ * Flourish mark — circular white backing so transparent PNG edges never pick up the header tint.
  */
 export function WellnessBrandLogo({ className }: Props) {
   const [failed, setFailed] = useState(false);
@@ -18,22 +18,21 @@ export function WellnessBrandLogo({ className }: Props) {
     <div
       className={
         className ??
-        "relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-xs font-bold ring-2 ring-[var(--wellness-ink)]/10"
+        "relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-1.5 text-xs font-bold shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
       }
     >
       {!failed ? (
         <Image
           src={WELLNESS_LOGO_PATH}
-          alt="CWI"
+          alt="Flourish"
           width={44}
           height={44}
-          className="object-cover"
-          unoptimized
+          className="h-full w-full object-contain"
           onError={() => setFailed(true)}
         />
       ) : (
-        <span className="text-[var(--wellness-ink)]" aria-hidden>
-          CWI
+        <span className="text-[0.65rem] font-bold leading-none text-[var(--wellness-ink)]" aria-hidden>
+          F
         </span>
       )}
     </div>

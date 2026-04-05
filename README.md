@@ -1,4 +1,4 @@
-# Shelter check-in (Flourish: Wellness Check-In)
+# Flourish: Wellness Check-In
 
 **Principle:** A system that translates invisible emotional load into actionable support.
 

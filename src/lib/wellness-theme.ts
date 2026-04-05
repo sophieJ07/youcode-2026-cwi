@@ -1,2 +1,2 @@
-/** Shared asset path (URL-encoded for spaces in filename). */
-export const WELLNESS_LOGO_PATH = "/assets/images/cwi%20logo%20WOMEN.avif";
+/** Brand mark in `public/` — header logos and favicon. */
+export const WELLNESS_LOGO_PATH = "/assets/images/flourish.png";

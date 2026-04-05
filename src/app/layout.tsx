@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Shelter check-in",
-    template: "%s | Shelter check-in",
+    default: "Flourish: Wellness Check-In",
+    template: "%s | Flourish: Wellness Check-In",
   },
   description: "Guest check-in and staff insights for the shelter.",
 };
