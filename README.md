@@ -4,7 +4,7 @@
   <img src="public/assets/images/flourish.png" alt="Flourish logo" width="112" height="112" />
 </p>
 
-**A system that turns emotional load into practical support, where being *seen* comes before being “educated.”**
+**A system that turns emotional load into practical support, where being *seen* comes before being educated.**
 
 ## Summary
 
