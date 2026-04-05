@@ -57,13 +57,13 @@ export function StaffLoginView() {
             <button
               type="button"
               onClick={() => router.push("/staff/access-code")}
-              className="min-h-12 flex-1 rounded-xl bg-[var(--staff-accent)] text-base font-semibold text-white shadow-md transition hover:opacity-95 active:scale-[0.99]"
+              className="min-h-12 min-w-0 flex-1 rounded-xl bg-[var(--staff-accent)] text-base font-semibold text-white shadow-md transition hover:opacity-95 active:scale-[0.99]"
             >
               Sign Up
             </button>
             <button
               type="submit"
-              className="min-h-12 flex-1 rounded-xl bg-[var(--staff-accent)] text-base font-semibold text-white shadow-md transition hover:opacity-95 active:scale-[0.99]"
+              className="min-h-12 min-w-0 flex-1 rounded-xl bg-[var(--wellness-accent-2)] text-base font-semibold text-white shadow-md transition hover:opacity-95 active:scale-[0.99]"
             >
               Log In
             </button>

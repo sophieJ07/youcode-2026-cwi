@@ -7,14 +7,14 @@ export default function StaffSectionLayout({
 }) {
   return (
     <div
-      className="staff-laptop-shell flex min-h-dvh flex-col font-sans antialiased"
+      className="staff-laptop-shell flex min-h-dvh flex-col bg-[var(--wellness-bg)] font-sans antialiased"
       style={
         {
-          "--staff-bg": "#f5eaec",
-          "--staff-ink": "#4a1f24",
-          "--staff-accent": "#6b2d38",
-          "--staff-input-bg": "#e6dfe3",
-          "--staff-card": "#ffffff",
+          "--staff-bg": "var(--wellness-bg)",
+          "--staff-ink": "var(--wellness-ink)",
+          "--staff-accent": "var(--wellness-accent)",
+          "--staff-input-bg": "var(--wellness-input-fill)",
+          "--staff-card": "var(--wellness-surface)",
         } as CSSProperties
       }
     >

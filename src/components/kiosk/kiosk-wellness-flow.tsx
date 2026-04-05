@@ -1,16 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { WellnessBrandLogo } from "@/components/wellness-brand-logo";
 import {
   LONG_FOLLOWUP_QUESTIONS,
   MOOD_OPTIONS,
   SHORT_FOLLOWUP_QUESTIONS,
   type WellnessQuestion,
 } from "./wellness-questions";
-
-/** Spaces in filenames are URL-encoded for the browser. */
-const LOGO_PATH = "/assets/images/cwi%20logo%20WOMEN.avif";
 
 /** Thanks screen visible time before fade-out (ms). */
 const THANKS_VISIBLE_MS = 2400;
@@ -127,7 +124,6 @@ function ShortQuestionMoodGrid({
 }
 
 export function KioskWellnessFlow() {
-  const [logoFailed, setLogoFailed] = useState(false);
   const [phase, setPhase] = useState<Phase>("access");
   const [accessInput, setAccessInput] = useState("");
 
@@ -221,27 +217,13 @@ export function KioskWellnessFlow() {
   const header = useMemo(
     () => (
       <header className="flex shrink-0 items-center gap-3 px-5 pb-3 pt-5">
-        <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-xs font-bold ring-2 ring-[var(--kiosk-ink)]/10">
-          {!logoFailed ? (
-            <Image
-              src={LOGO_PATH}
-              alt="CWI"
-              width={44}
-              height={44}
-              className="object-cover"
-              unoptimized
-              onError={() => setLogoFailed(true)}
-            />
-          ) : (
-            <span aria-hidden>CWI</span>
-          )}
-        </div>
+        <WellnessBrandLogo />
         <span className="text-lg font-bold tracking-tight text-[var(--kiosk-ink)]">
           Wellness Check-In
         </span>
       </header>
     ),
-    [logoFailed],
+    [],
   );
 
   const languageFooter = (

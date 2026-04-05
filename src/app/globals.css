@@ -3,6 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Kiosk + staff laptop — single palette */
+  --wellness-bg: #f8eaed;
+  --wellness-ink: #4a1f24;
+  --wellness-accent: #6b2d38;
+  --wellness-accent-2: #3d2822;
+  --wellness-input-fill: #e6dfe3;
+  --wellness-surface: #ffffff;
 }
 
 @theme inline {
@@ -22,5 +30,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
