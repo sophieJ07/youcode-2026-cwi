@@ -1,6 +1,32 @@
-# Shelter check-in
+# Shelter check-in (Flourish: Wellness Check-In)
 
-Next.js + Supabase: public kiosk at `/`, staff area at `/staff/*`.
+**Principle:** A system that translates invisible emotional load into actionable support.
+
+## Summary
+
+**Flourish: Wellness Check-In** is a multi-language web app for shelter and supportive-housing settings. Guests use a public **kiosk** to log mood and optional short or long wellness surveys—responses stay **anonymous** and are tied only to a shelter access code. Staff sign in separately, unlock their site in Supabase, and view **aggregated insights** (near-real-time and longer windows) so teams can spot patterns and plan programming. The stack is **Next.js**, **Supabase** (Postgres, Auth, RLS), and **next-intl** for the kiosk UI.
+
+## Features overview
+
+### Public kiosk (`/`)
+
+- **Branded flow (“Flourish: Wellness Check-In”)** — guests complete an anonymous check-in on a shared device.
+- **Shelter access code** — the code is validated in Supabase before the mood step; tie-in is per shelter.
+- **Mood + surveys** — multiselect mood tiles (six levels), optional **short** follow-up (three questions) or **long** follow-up (six questions), with skip/next paths matching the on-screen flow.
+- **Languages** — UI strings are loaded with **next-intl** from `messages/*.json` (locale switcher on the kiosk).
+- **Persistence** — completed sessions are stored in **`mood_entries`** via the **`submit_kiosk_wellness_checkin`** RPC (security definer, callable with the anon key so kiosk devices do not need staff login).
+
+### Staff area (`/staff/*`)
+
+- **Authentication** — email sign-in; middleware refreshes the session and restricts `/staff/*` (except login).
+- **Shelter access** — after login, staff enter the shelter code once to unlock **`claim_shelter_access`**; dashboard data is scoped to shelters linked to their account.
+- **Insights dashboard** (`/staff/dashboard`):
+  - **Short term** — choose **last hour**, **last six hours**, or **today** (staff time zone); see mood distribution and short-survey aggregates. Optional **Claude**-based activity suggestions when `AI_PROVIDER=claude` and `ANTHROPIC_API_KEY` are set.
+  - **Long term** — **last week** or **last two weeks** of check-ins that include the **long** form; Mind / Body / Soul layout with distribution bars, ranked lists, and **mean-based** Likert summaries (stress and community belonging) shown on ring cards.
+
+### Stack
+
+- **Next.js** (App Router), **Supabase** (Postgres, Auth, row-level security), **server actions** for kiosk validation and submission.
 
 ## Setup
 
@@ -14,9 +40,9 @@ npm run dev
 - Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local` (Supabase → Project Settings → API).
 - Supabase → Authentication → Providers: turn on **Email**, allow sign-ups if staff should create accounts, and adjust **Confirm email** (off is easiest for local dev).
 - Supabase → Authentication → URL configuration: add redirect URL `http://localhost:3000/auth/callback` (and production when deployed).
-- Supabase → SQL editor: run `00001_mood_entries.sql` on a fresh DB, then `00002_mood_entries_survey_columns.sql` to extend `mood_entries`, then `00003_claim_shelter_access_disambiguate.sql` (fixes ambiguous `shelter_id` in `claim_shelter_access` for existing DBs), then `00004_mood_six_levels.sql` (allows mood array values **6**, not just the column type).
+- Supabase → SQL editor: run SQL in **`supabase/migrations/`** in dependency order: `00001_mood_entries.sql`, `00002_mood_entries_survey_columns.sql`, both `00003_*.sql` files (`claim_shelter_access_disambiguate` and `mood_level_extend_to_6` as needed), `00004_mood_six_levels.sql`, then **`00005_submit_kiosk_wellness_checkin.sql`** for full kiosk submissions.
+- **next-intl** is required for kiosk translations (`messages/*.json`).
 - Seed at least one shelter, e.g.:
-- next-intl is needed to translate english text into other languages
 
 ```sql
 insert into public.shelters (name, access_code)
@@ -72,11 +98,12 @@ Index: `(shelter_id, created_at desc)`.
 | Name | Called by | Role |
 | --- | --- | --- |
 | `validate_kiosk_access` | Kiosk | `anon`, `authenticated` |
-| `submit_mood_checkin` | Kiosk | `anon`, `authenticated` |
+| `submit_mood_checkin` | Kiosk (legacy / mood-only) | `anon`, `authenticated` |
+| `submit_kiosk_wellness_checkin` | Kiosk (full check-in) | `anon`, `authenticated` |
 | `claim_shelter_access` | Staff UI | `authenticated` |
 
 **RLS** (all three tables enabled)
 
 - **`shelters`**: `authenticated` can `select` rows for shelters unlocked in `user_shelter_access`.
 - **`user_shelter_access`**: `authenticated` can `select` own rows (`user_id = auth.uid()`).
-- **`mood_entries`**: `authenticated` can `select` rows whose `shelter_id` is unlocked for them. Inserts use `submit_mood_checkin` (security definer); survey fields are intended to be updated via server/RPC when wired from the app.
+- **`mood_entries`**: `authenticated` can `select` rows whose `shelter_id` is unlocked for them. Inserts from the kiosk use **`submit_kiosk_wellness_checkin`** or **`submit_mood_checkin`** (both security definer; no direct `insert` policy for anonymous clients).
