@@ -36,8 +36,7 @@ npm install next-intl
 npm run dev
 ```
 
-- Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local` (Supabase → Project Settings → API).
-- Supabase → Authentication → Providers: turn on **Email**, allow sign-ups if staff should create accounts, and adjust **Confirm email** (off is easiest for local dev).
+- Set keys in `.env.local` 
 - Supabase → Authentication → URL configuration: add redirect URL `http://localhost:3000/auth/callback` (and production when deployed).
 - Supabase → SQL editor: run SQL in **`supabase/migrations/`** in dependency order: `00001_mood_entries.sql`, `00002_mood_entries_survey_columns.sql`, both `00003_*.sql` files (`claim_shelter_access_disambiguate` and `mood_level_extend_to_6` as needed), `00004_mood_six_levels.sql`, then **`00005_submit_kiosk_wellness_checkin.sql`** for full kiosk submissions.
 - **next-intl** is required for kiosk translations (`messages/*.json`).
