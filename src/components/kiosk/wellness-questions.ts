@@ -77,8 +77,8 @@ export function getMoodOptions(t: TFunction): MoodOption[] {
 const SHORT_IDS = ["short-1", "short-2", "short-3"];
 const SHORT_OPT_COUNTS: Record<string, number> = {
   "short-1": 6,
-  "short-2": 5,
-  "short-3": 5,
+  "short-2": 6,
+  "short-3": 6,
 };
 
 export function getShortQuestions(t: TFunction): WellnessQuestion[] {

@@ -14,24 +14,21 @@ export const MOOD_OPTIONS: Record<number, string> = {
 // All options stored as 1-based indices
 
 export const SQ1_OPTIONS: Record<number, string> = {
-  1: "Talking to others",
-  2: "Improved sleep or relaxation",
-  3: "Setting goals and priorities",
-  4: "A short walk or other physical activity",
-  5: "A meal or snack",
-  6: "None right now",
-  7: "Other",
+  1: "Talking to others like me",
+  2: "Advice and guidance",
+  3: "Improved sleep or relaxation",
+  4: "A meal or snack",
+  5: "Setting goals and priorities",
+  6: "A short walk or other physical activity",
 };
 
 export const SQ2_OPTIONS: Record<number, string> = {
-  1: "Stretching",
+  1: "Stretching or yoga",
   2: "Light walking",
   3: "Chair-based movement",
   4: "Breathing exercises",
   5: "Dancing or music-based movement",
-  6: "Playing with children",
-  7: "None right now",
-  8: "Other",
+  6: "Games or playing",
 };
 
 export const SQ3_OPTIONS: Record<number, string> = {
@@ -41,9 +38,6 @@ export const SQ3_OPTIONS: Record<number, string> = {
   4: "Time in nature",
   5: "Reading or writing",
   6: "Connecting with others",
-  7: "Caring for children",
-  8: "None right now",
-  9: "Other",
 };
 
 // ─── Long Survey ──────────────────────────────────────────────────────────────
