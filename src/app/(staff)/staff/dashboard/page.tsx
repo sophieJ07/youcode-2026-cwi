@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/staff/sign-out-button";
 import { StaffShellHeader } from "@/components/staff/staff-shell-header";
-import { InsightsWellnessSlot } from "@/components/staff/insights-wellness-slot";
-import { InsightsActionsSlot } from "@/components/staff/insights-actions-slot";
+import { StaffInsightsDashboard } from "@/components/staff/staff-insights-dashboard";
+import { getShortTermInsightsData } from "@/lib/insights/short-term-insights";
+import { parseShortTimeRange } from "@/lib/insights/time-range";
 
 export const metadata: Metadata = {
   title: "Insights | Staff",
@@ -18,7 +18,17 @@ function shelterLocationPhrase(names: string[]): string {
   return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
 }
 
-export default async function StaffDashboardPage() {
+type SearchParams = Promise<{ term?: string; range?: string }>;
+
+export default async function StaffDashboardPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const sp = await searchParams;
+  const term = sp.term === "long" ? "long" : "short";
+  const range = parseShortTimeRange(sp.range);
+
   const supabase = await createServerSupabaseClient();
 
   const {
@@ -47,41 +57,28 @@ export default async function StaffDashboardPage() {
 
   const at = shelterLocationPhrase(shelterNames);
 
-  const loadingDiv = (
-    <div className="min-h-[200px] animate-pulse rounded-xl bg-[var(--staff-input-bg)]/50" />
-  );
+  const shortData =
+    term === "short" ? await getShortTermInsightsData(range) : null;
+
+  const aiConfigured =
+    process.env.AI_PROVIDER === "claude" &&
+    Boolean(process.env.ANTHROPIC_API_KEY);
 
   return (
     <div className="flex min-h-dvh flex-col bg-[var(--staff-bg)] text-[var(--staff-ink)]">
       <StaffShellHeader showProfileSlot profileSlot={<SignOutButton />} />
       <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-8">
-        <h1 className="text-center text-2xl font-bold leading-snug text-[var(--staff-ink)] sm:text-left sm:text-3xl">
+        <h1 className="text-center text-3xl font-bold leading-snug text-[var(--staff-ink)] sm:text-left sm:text-4xl">
           Live wellness data at {at}
         </h1>
 
-        {/* Wellness Summary */}
-        <section className="mt-8 rounded-2xl border border-[var(--staff-ink)]/10 bg-[var(--staff-card)] p-6 shadow-md sm:p-8">
-          <h2 className="text-lg font-bold text-[var(--staff-ink)]">
-            Wellness Summary
-          </h2>
-          <div className="mt-6">
-            <Suspense fallback={loadingDiv}>
-              <InsightsWellnessSlot />
-            </Suspense>
-          </div>
-        </section>
-
-        {/* Suggested Actions */}
-        <section className="mt-6 rounded-2xl border border-[var(--staff-ink)]/10 bg-[var(--staff-card)] p-6 shadow-md sm:mt-8 sm:p-8">
-          <h2 className="text-lg font-bold text-[var(--staff-ink)]">
-            Suggested Actions
-          </h2>
-          <div className="mt-6">
-            <Suspense fallback={loadingDiv}>
-              <InsightsActionsSlot />
-            </Suspense>
-          </div>
-        </section>
+        <StaffInsightsDashboard
+          key={`${term}-${range}`}
+          term={term}
+          range={range}
+          snapshot={shortData?.snapshot ?? null}
+          aiConfigured={aiConfigured}
+        />
       </main>
     </div>
   );
