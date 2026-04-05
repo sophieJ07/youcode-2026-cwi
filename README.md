@@ -1,32 +1,31 @@
 # Flourish: Wellness Check-In
 
-**Principle:** A system that translates invisible emotional load into actionable support.
+<p align="center">
+  <img src="public/assets/images/flourish.png" alt="Flourish logo" width="112" height="112" />
+</p>
+
+**A system that turns emotional load into practical support, where being *seen* comes before being “educated.”**
 
 ## Summary
 
-**Flourish: Wellness Check-In** is a multi-language web app for shelter and supportive-housing settings. Guests use a public **kiosk** to log mood and optional short or long wellness surveys—responses stay **anonymous** and are tied only to a shelter access code. Staff sign in separately, unlock their site in Supabase, and view **aggregated insights** (near-real-time and longer windows) so teams can spot patterns and plan programming. The stack is **Next.js**, **Supabase** (Postgres, Auth, RLS), and **next-intl** for the kiosk UI.
+**Flourish: Wellness Check-In** is a deployed multi-language web app for designed to improve the wellbeing of women's shelter residents. Residents use a public **kiosk / tablet** to log mood (and optional short or long wellness surveys responses) anytime during the day. The responses are **anonymous**. Shelter staff sign in separately and view **live aggregated insights** so teams can spot patterns and plan programming accordingly. The system is ready for use in all women's shelter in British Columbia. 
 
-## Features overview
+The stack is **Next.js** + **next-intl** and **Supabase** (Postgres, Auth, RLS). 
 
-### Public kiosk (`/`)
+## User Flow & Features Overview 
 
-- **Branded flow (“Flourish: Wellness Check-In”)** — guests complete an anonymous check-in on a shared device.
-- **Shelter access code** — the code is validated in Supabase before the mood step; tie-in is per shelter.
-- **Mood + surveys** — multiselect mood tiles (six levels), optional **short** follow-up (three questions) or **long** follow-up (six questions), with skip/next paths matching the on-screen flow.
-- **Languages** — UI strings are loaded with **next-intl** from `messages/*.json` (locale switcher on the kiosk).
-- **Persistence** — completed sessions are stored in **`mood_entries`** via the **`submit_kiosk_wellness_checkin`** RPC (security definer, callable with the anon key so kiosk devices do not need staff login).
+**For residents (shared tablet or kiosk)**  
+- Staff opens **Flourish: Wellness Check-In** and enter the site's **access code**.
+- Residents visit the tablet throughout their day and tap how they're feeling using **six mood options**, then choose whether to add a little more: a **short** wellness follow-up (3 questions), a **longer** long term check-in(3 questions), or to skip straight to done. All questions are skippable.
+- The whole flow is available in **several languages**, particularly the most common ones in the synthetic resident dataset provided in the case. 
+- All responses are anonymous. 
 
-### Staff area (`/staff/*`)
-
-- **Authentication** — email sign-in; middleware refreshes the session and restricts `/staff/*` (except login).
-- **Shelter access** — after login, staff enter the shelter code once to unlock **`claim_shelter_access`**; dashboard data is scoped to shelters linked to their account.
-- **Insights dashboard** (`/staff/dashboard`):
-  - **Short term** — choose **last hour**, **last six hours**, or **today** (staff time zone); see mood distribution and short-survey aggregates. Optional **Claude**-based activity suggestions when `AI_PROVIDER=claude` and `ANTHROPIC_API_KEY` are set.
-  - **Long term** — **last week** or **last two weeks** of check-ins that include the **long** form; Mind / Body / Soul layout with distribution bars, ranked lists, and **mean-based** Likert summaries (stress and community belonging) shown on ring cards.
-
-### Stack
-
-- **Next.js** (App Router), **Supabase** (Postgres, Auth, row-level security), **server actions** for kiosk validation and submission.
+**For shelter staff**  
+- Staff **sign in with email** the way they would any work app.
+- Staff enters the same **shelter access code** their site uses so the system knows which location(s) they’re allowed to see.
+- The **insights dashboard** provides two big picture views: 
+  - **Short-term** views show **the last hour**, **the last six hours**, or **today**: how moods are spread out, and summaries of the **short** survey when people answered it. Staff can turn on an AI mode for **AI-generated activity ideas** inspired by recent patterns. 
+  - **Long-term** views look at **the last week** or **the last two weeks** for check-ins that included the **long** survey. Residents' experience related to each of **Mind, Body, and Soul** are laid out with visuals.
 
 ## Setup
 
